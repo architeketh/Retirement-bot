@@ -1,37 +1,51 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Builds site/data/news.json with up to 10 fresh senior-relevant items.
-Robust: multiple feeds, dedupe, best-effort images, and fallback to previous file if too few items.
+Builds site/data/news.json (up to 10 items) and archives the previous day's
+file at site/data/archive/YYYY-MM-DD.json. Also writes site/data/archive/index.json
+for the archive page.
+
+It will try to fetch yesterday's deployed file from the live Pages URL to keep
+history across runs (no repo commits needed).
 """
 
 import os, json, re, time, hashlib, sys
-from datetime import datetime, timezone
+from datetime import datetime, timezone, date
 from urllib.parse import urlparse
 
 import feedparser
 import requests
 
-OUT_JSON = os.path.join("site", "data", "news.json")
+SITE_DIR = "site"
+OUT_JSON = os.path.join(SITE_DIR, "data", "news.json")
+ARCHIVE_DIR = os.path.join(SITE_DIR, "data", "archive")
+ARCHIVE_INDEX = os.path.join(ARCHIVE_DIR, "index.json")
 TIMEOUT = 10
-UA = "RetirementBot-News/1.2 (+github-actions)"
+UA = "RetirementBot-News/1.3 (+github-actions)"
 
+# Feeds
 FEEDS = [
-    # Senior / aging focused
     "https://www.aarp.org/rss/aarp/everything.xml",
     "https://www.nextavenue.org/feed/",
     "https://www.kffhealthnews.org/topic/aging/feed/",
     "https://www.ncoa.org/news/articles/feed/",
-    # Official programs / health
     "https://blog.medicare.gov/feed/",
     "https://www.ssa.gov/newsroom/press-releases/rss.xml",
     "https://www.nia.nih.gov/news-events/newsroom/rss.xml",
-    # Broader health & scams (useful alerts)
     "https://tools.cdc.gov/api/v2/resources/media/403372.rss",
     "https://www.ftc.gov/feeds/consumerscams.xml"
 ]
 
 def ensure_dir(p): os.makedirs(os.path.dirname(p), exist_ok=True)
+
+def base_url_from_env():
+    # Compute https://{owner}.github.io/{repo} if possible
+    repo = os.getenv("GITHUB_REPOSITORY", "")  # e.g. "architeketh/Retirement-bot"
+    if "/" in repo:
+        owner, name = repo.split("/", 1)
+        return f"https://{owner}.github.io/{name}"
+    # fallback: user can override
+    return os.getenv("SITE_BASE_URL", "").rstrip("/")
 
 def hostname(u):
     try:
@@ -42,7 +56,7 @@ def hostname(u):
 
 def clean_html(s):
     if not s: return ""
-    return re.sub(r"<[^>]+>", " ", s).replace("\xa0"," ").strip()
+    return re.sub(r"<[^>]+>", " ", s).replace("\xa0", " ").strip()
 
 def ts_from_entry(e):
     for k in ("published_parsed","updated_parsed","created_parsed"):
@@ -53,17 +67,14 @@ def ts_from_entry(e):
     return int(time.time())
 
 def try_image(entry, page_url):
-    # media tags
     for k in ("media_content","media_thumbnail"):
         v = entry.get(k)
         if isinstance(v, list) and v:
             u = v[0].get("url")
             if u: return u
-    # image enclosure
     for link in entry.get("links", []):
         if link.get("rel") == "enclosure" and "image" in (link.get("type") or ""):
             return link.get("href")
-    # OG image (best-effort, timeout guarded)
     if page_url:
         try:
             r = requests.get(page_url, headers={"User-Agent": UA}, timeout=TIMEOUT)
@@ -86,7 +97,6 @@ def collect():
     for url in FEEDS:
         try:
             feed = feedparser.parse(url, request_headers=headers)
-            count = 0
             for e in feed.entries:
                 link = e.get("link")
                 title = (e.get("title") or "").strip()
@@ -96,63 +106,79 @@ def collect():
                 if key in seen:
                     continue
                 seen.add(key)
-                item = {
+                items.append({
                     "title": title,
                     "url": link,
                     "source": hostname(link),
                     "summary": clean_html(e.get("summary") or e.get("description") or ""),
                     "published_ts": ts_from_entry(e),
                     "image": try_image(e, link)
-                }
-                items.append(item)
-                count += 1
-            print(f"[feed] {url} -> {count} entries", file=sys.stderr)
+                })
         except Exception as ex:
             print(f"[WARN] feed failed {url}: {ex}", file=sys.stderr)
-
-    # newest first, cap 10
+    # newest first; cap 10
     items.sort(key=lambda x: x["published_ts"], reverse=True)
     items = items[:10]
     for it in items:
         it["published"] = datetime.fromtimestamp(it["published_ts"], tz=timezone.utc).isoformat()
     return items
 
-def read_existing():
+def fetch_live_json(url):
     try:
-        with open(OUT_JSON, "r", encoding="utf-8") as f:
-            j = json.load(f)
-        arr = j if isinstance(j, list) else j.get("items", [])
-        return arr if isinstance(arr, list) else []
+        r = requests.get(url, headers={"User-Agent": UA}, timeout=TIMEOUT)
+        if r.ok: return r.json()
     except Exception:
-        return []
+        pass
+    return None
 
-FALLBACKS = [
-    # lightweight evergreen fallback set (never empty UI)
-    {"title":"Medicare open enrollment: key dates and tips","url":"https://www.medicare.gov/","source":"medicare.gov","summary":"What to compare during Medicare Open Enrollment.","published_ts": int(time.time())-1, "image":"https://logo.clearbit.com/medicare.gov"},
-    {"title":"AARP: 5 Social Security filing myths","url":"https://www.aarp.org/retirement/social-security/","source":"aarp.org","summary":"Common misconceptions debunked.","published_ts": int(time.time())-2, "image":"https://logo.clearbit.com/aarp.org"},
-    {"title":"Next Avenue: Downsizing without the stress","url":"https://www.nextavenue.org/","source":"nextavenue.org","summary":"Practical steps for rightsizing.","published_ts": int(time.time())-3, "image":"https://logo.clearbit.com/nextavenue.org"}
-]
+def write_archive_if_needed(live_url):
+    """If yesterday's deployed news.json exists and is from a prior UTC day,
+       copy it into archive/YYYY-MM-DD.json and update archive/index.json."""
+    if not live_url: return
+    live = fetch_live_json(live_url + "/data/news.json")
+    if not live: return
+    fetched_at = live.get("fetched_at") or ""
+    try:
+        fetched_day = datetime.fromisoformat(fetched_at.replace("Z","+00:00")).date()
+    except Exception:
+        return
+    today = date.today()
+    if fetched_day >= today:
+        return  # same day, nothing to archive
+
+    ensure_dir(os.path.join(ARCHIVE_DIR, "x.json"))
+    # write yesterday (or prior day) snapshot if not already present
+    arc_path = os.path.join(ARCHIVE_DIR, f"{fetched_day.isoformat()}.json")
+    if not os.path.exists(arc_path):
+        with open(arc_path, "w", encoding="utf-8") as f:
+            json.dump(live, f, ensure_ascii=False, indent=2)
+        print(f"[archive] saved {arc_path}")
+
+    # update archive index
+    idx = []
+    if os.path.exists(ARCHIVE_INDEX):
+        try:
+            with open(ARCHIVE_INDEX, "r", encoding="utf-8") as f:
+                idx = json.load(f)
+        except Exception:
+            idx = []
+    # ensure unique by date
+    dates = {e.get("date"): e for e in idx if isinstance(e, dict) and e.get("date")}
+    dates[fetched_day.isoformat()] = {"date": fetched_day.isoformat(), "total": live.get("total", 0)}
+    # keep 120 most recent days
+    idx = sorted(dates.values(), key=lambda x: x["date"], reverse=True)[:120]
+    with open(ARCHIVE_INDEX, "w", encoding="utf-8") as f:
+        json.dump(idx, f, ensure_ascii=False, indent=2)
+    print(f"[archive] index updated: {len(idx)} days")
 
 def main():
     ensure_dir(OUT_JSON)
+    # archive yesterday from live site (so we keep history across runs)
+    base = base_url_from_env()
+    if base:
+        write_archive_if_needed(base)
+
     items = collect()
-
-    # If we gathered too few, blend with previous & fallbacks
-    if len(items) < 6:
-        prev = read_existing()
-        merged = items + [x for x in prev if x.get("url") and x.get("title")]
-        # Add evergreen if still thin
-        if len(merged) < 10:
-            merged += FALLBACKS
-        # Dedupe by title+url
-        seen, deduped = set(), []
-        for it in merged:
-            key = dedup_key(it.get("title"), it.get("url"))
-            if key in seen: continue
-            seen.add(key); deduped.append(it)
-        deduped.sort(key=lambda x: int(x.get("published_ts", time.time())), reverse=True)
-        items = deduped[:10]
-
     payload = {
         "fetched_at": datetime.now(timezone.utc).isoformat(),
         "total": len(items),
