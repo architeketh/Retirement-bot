@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Retirement Hub</title>
-<link rel="stylesheet" href="assets/styles.css?v=hero6">
+<link rel="stylesheet" href="assets/styles.css?v=hero7">
 </head>
 <body>
 
@@ -14,7 +14,11 @@
       <img src="assets/logo.svg" alt="" class="brand-logo" onerror="this.style.display='none'">
       <span class="brand-text">Retirement <strong>Hub</strong></span>
     </a>
-    <nav class="topnav">
+
+    <!-- Mobile menu button -->
+    <button class="nav-toggle" aria-expanded="false" aria-controls="topnav">Menu</button>
+
+    <nav class="topnav" id="topnav">
       <a data-tab href="#links" class="contrast">Links</a>
       <a data-tab href="#lifestyle">Lifestyle</a>
       <a data-tab href="#financial">Financial</a>
@@ -31,11 +35,9 @@
       <span class="bold-black">Plan boldly.</span>
       <span class="grad">Retire confidently.</span>
     </h1>
-
     <div class="meta-row">
       <small id="lastUpdated" class="muted">Updated:</small>
     </div>
-
     <div class="search-row">
       <input id="globalSearch" type="search" placeholder="Search Social Security, Medicare, taxes, travel, discounts…">
     </div>
@@ -82,5 +84,6 @@
 </footer>
 
 <script src="app.js"></script>
+<script src="assets/mobile.js"></script>
 </body>
 </html>
