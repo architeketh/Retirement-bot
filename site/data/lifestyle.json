@@ -1,12 +1,22 @@
 [
   {
-    "title":"Healthy Living",
-    "desc":"Fitness, hobbies, community.",
-    "image":"",
-    "tags":["fitness","community"],
-    "links":[
+    "title": "Healthy Living",
+    "desc": "Fitness, hobbies, and community.",
+    "image": "",
+    "tags": ["fitness","community"],
+    "links": [
       {"label":"SilverSneakers","url":"https://www.silversneakers.com/"},
-      {"label":"Senior Planet","url":"https://seniorplanet.org/"}
+      {"label":"Senior Planet Fitness","url":"https://seniorplanet.org/fitness/"}
+    ]
+  },
+  {
+    "title": "Learning & Travel",
+    "desc": "Keep growing—near home or abroad.",
+    "image": "",
+    "tags": ["learning","travel"],
+    "links": [
+      {"label":"Osher Lifelong Learning (OLLI)","url":"https://www.osherfoundation.org/olli_list.html"},
+      {"label":"Road Scholar","url":"https://www.roadscholar.org/"}
     ]
   }
 ]
