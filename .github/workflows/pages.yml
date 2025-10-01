@@ -23,22 +23,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Build Seniors Daily News into site/data/news.json
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+
       - name: Install feed deps
         run: pip install feedparser requests
-      - name: Build news.json
+
+      - name: Build Seniors Daily News
         run: python bot/senior_news.py
 
-      # Safety check: make sure the site has an index.html
       - name: Verify site folder
         run: |
           test -f site/index.html || (echo "::error::Missing site/index.html" && exit 1)
           touch site/.nojekyll
-          echo "=== TREE (site) ==="; find site -maxdepth 2 -type f -print | sort
-          echo "=== HEAD news.json ==="; head -n 25 site/data/news.json || true
+          echo "=== HEAD site/data/news.json ==="
+          head -n 40 site/data/news.json || true
 
       - uses: actions/configure-pages@v5
         with:
