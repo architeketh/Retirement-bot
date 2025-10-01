@@ -18,5 +18,42 @@
       {"label":"Osher Lifelong Learning (OLLI)","url":"https://www.osherfoundation.org/olli_list.html"},
       {"label":"Road Scholar","url":"https://www.roadscholar.org/"}
     ]
+  },
+  {
+    "title": "Golf",
+    "desc": "Top courses, handicaps, and more.",
+    "image": "",
+    "tags": ["golf"],
+    "links": [
+      {"label":"Golf Digest: Top 100 (U.S.)","url":"https://www.golfdigest.com/story/americas-100-greatest-golf-courses-ranking"},
+      {"label":"Top 100 You Can Play (GD)","url":"https://www.golfdigest.com/gallery/americas-100-greatest-public-courses-ranking"},
+      {"label":"GOLF.com Top 100 Courses","url":"https://golf.com/travel/top-100-courses/"},
+      {"label":"GHIN Handicap (USGA)","url":"https://www.ghin.com/"},
+      {"label":"USGA Handicapping","url":"https://www.usga.org/handicapping.html"}
+    ]
+  },
+  {
+    "title": "Travel Tools",
+    "desc": "Plan and book trips, tours, stays.",
+    "image": "",
+    "tags": ["travel","planning"],
+    "links": [
+      {"label":"GetYourGuide (Tours & Activities)","url":"https://www.getyourguide.com/"},
+      {"label":"Expedia","url":"https://www.expedia.com/"},
+      {"label":"Airbnb","url":"https://www.airbnb.com/"},
+      {"label":"Google Flights","url":"https://www.google.com/travel/flights"}
+    ]
+  },
+  {
+    "title": "Flight & Weather",
+    "desc": "Track flights and check forecasts.",
+    "image": "",
+    "tags": ["travel","weather"],
+    "links": [
+      {"label":"FlightAware Flight Tracker","url":"https://flightaware.com/"},
+      {"label":"Flightradar24","url":"https://www.flightradar24.com/"},
+      {"label":"NOAA Weather (NWS)","url":"https://www.weather.gov/"},
+      {"label":"Weather.com","url":"https://weather.com/"}
+    ]
   }
 ]
