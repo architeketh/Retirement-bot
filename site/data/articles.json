@@ -1,3 +1,18 @@
 [
-  {"title":"How to Plan a Roth Conversion","url":"https://www.nerdwallet.com/article/investing/roth-conversion","summary":"Pros, cons, and timing basics.","source":"NerdWallet","published":"2024-01-15","tags":["tax","roth","investing"]}
+  {
+    "title":"How to Plan a Roth Conversion",
+    "url":"https://www.nerdwallet.com/article/investing/roth-conversion",
+    "summary":"Pros, cons, and timing basics.",
+    "source":"NerdWallet",
+    "published":"2024-01-15",
+    "tags":["tax","roth","investing"]
+  },
+  {
+    "title":"Medicare Basics: Parts A, B, C, and D",
+    "url":"https://www.medicare.gov/what-medicare-covers/your-medicare-coverage-choices",
+    "summary":"How the parts fit together and what they cover.",
+    "source":"Medicare.gov",
+    "published":"2024-10-10",
+    "tags":["medicare","coverage"]
+  }
 ]
