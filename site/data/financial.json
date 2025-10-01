@@ -1,4 +1,7 @@
 [
   {"title":"Investor.gov","url":"https://www.investor.gov/","desc":"SEC investor education.","category":"Financial","domain":"investor.gov"},
-  {"title":"IRS Withholding Estimator","url":"https://www.irs.gov/individuals/tax-withholding-estimator","desc":"Estimate withholding.","category":"Calculators","domain":"irs.gov"}
+  {"title":"CFPB: Retirement & Pensions","url":"https://www.consumerfinance.gov/retirement/","desc":"Consumer protections and tips.","category":"Financial","domain":"consumerfinance.gov"},
+  {"title":"FINRA Fund Analyzer","url":"https://tools.finra.org/fund_analyzer/","desc":"Compare mutual fund/ETF costs.","category":"Tools","domain":"finra.org"},
+  {"title":"SSA Retirement Estimator","url":"https://www.ssa.gov/benefits/retirement/estimator.html","desc":"Personalized SSA estimate.","category":"Calculators","domain":"ssa.gov"},
+  {"title":"IRS Withholding Estimator","url":"https://www.irs.gov/individuals/tax-withholding-estimator","desc":"Estimate federal withholding.","category":"Calculators","domain":"irs.gov"}
 ]
