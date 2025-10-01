@@ -17,15 +17,30 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Verify site folder
         run: |
           test -f site/index.html || (echo "::error::Missing site/index.html" && exit 1)
-          echo "=== TREE ==="; find site -maxdepth 2 -type f -print | sort
-      - uses: actions/upload-pages-artifact@v3
+          touch site/.nojekyll
+          echo "=== TREE (site) ==="
+          find site -maxdepth 2 -type f -print | sort
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true   # <-- auto-enable Pages for this repo
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           path: site
-      - id: deployment
+
+      - name: Deploy
+        id: deployment
         uses: actions/deploy-pages@v4
