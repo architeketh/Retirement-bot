@@ -3,3 +3,29 @@
 body { margin: 0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color: #111; background: #fff; }
 a { color: inherit; }
 h1,h2,h3 { letter-spacing: -0.01em; }
+/* Hero gradient + bold/grad headline if you use two-line H1 with a span */
+header.hero{
+  background:
+    radial-gradient(1200px 500px at 20% -10%, rgba(0,120,255,.18), transparent 60%),
+    radial-gradient(900px 400px at 80% -10%, rgba(168,85,247,.15), transparent 60%),
+    linear-gradient(#f7f7f8,#ffffff);
+  border-bottom: 1px solid #eee;
+}
+h1 .bold-black{ color:#0a0a0a; font-weight:900 }
+h1 .grad{
+  background: linear-gradient(90deg, #2563eb 0%, #7c3aed 60%, #a855f7 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent; font-weight:900;
+}
+/* Colored tabs */
+.tabs a[href="#links"]{ color:#2563eb; border-color:#dbeafe; background:#eff6ff }
+.tabs a[href="#links"].contrast{ background:#2563eb; color:#fff; border-color:#2563eb }
+.tabs a[href="#lifestyle"]{ color:#0f766e; border-color:#ccfbf1; background:#ecfeff }
+.tabs a[href="#lifestyle"].contrast{ background:#14b8a6; color:#fff; border-color:#14b8a6 }
+.tabs a[href="#financial"]{ color:#b45309; border-color:#fde68a; background:#fffbeb }
+.tabs a[href="#financial"].contrast{ background:#f59e0b; color:#111; border-color:#f59e0b }
+.tabs a[href="#articles"]{ color:#7c3aed; border-color:#e9d5ff; background:#faf5ff }
+.tabs a[href="#articles"].contrast{ background:#7c3aed; color:#fff; border-color:#7c3aed }
+/* Card hover polish */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+article{background:#fff;border:1px solid #ececec;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.06);padding:12px 14px;overflow:hidden;transition:transform .08s,box-shadow .08s,border-color .08s}
+article:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(0,0,0,.09);border-color:#e5e7eb}
