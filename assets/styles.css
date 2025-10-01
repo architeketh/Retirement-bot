@@ -1,9 +1,17 @@
-:root { --wrap: min(1100px, 92%); --gap: 18px; --radius: 16px; --shadow: 0 6px 20px rgba(0,0,0,0.08); }
+/* ========== Base ========== */
+:root { --wrap: min(1100px, 92%); --gap: 18px; --radius: 16px; --shadow: 0 10px 30px rgba(0,0,0,.06); }
 * { box-sizing: border-box; }
-body { margin: 0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color: #111; background: #fff; }
-a { color: inherit; }
-h1,h2,h3 { letter-spacing: -0.01em; }
-/* Hero gradient + bold/grad headline if you use two-line H1 with a span */
+html,body { margin:0; padding:0; }
+body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#111; background:#fff; }
+a { color: inherit; text-decoration: none; }
+h1,h2,h3 { letter-spacing:-.01em; }
+
+/* ========== Layout ========== */
+.wrap{ width: var(--wrap); margin: 0 auto; }
+main{ width: var(--wrap); margin: 0 auto; padding: 22px 0 48px; }
+.muted{ color:#666; }
+
+/* ========== Hero ========== */
 header.hero{
   background:
     radial-gradient(1200px 500px at 20% -10%, rgba(0,120,255,.18), transparent 60%),
@@ -11,12 +19,22 @@ header.hero{
     linear-gradient(#f7f7f8,#ffffff);
   border-bottom: 1px solid #eee;
 }
-h1 .bold-black{ color:#0a0a0a; font-weight:900 }
-h1 .grad{
+header.hero .wrap{ padding: 28px 0; }
+h1.tagline{ margin: 0 0 6px; font-size: clamp(32px,5vw,48px); line-height:1.05; letter-spacing:-.02em; font-weight:800; }
+.bold-black{ color:#0a0a0a; font-weight:900; }
+.grad{
   background: linear-gradient(90deg, #2563eb 0%, #7c3aed 60%, #a855f7 100%);
   -webkit-background-clip: text; background-clip: text; color: transparent; font-weight:900;
 }
-/* Colored tabs */
+
+/* ========== Tabs ========== */
+.tabs { display:flex; gap:10px; flex-wrap:wrap; margin:12px 0 18px }
+.tabs a { padding:8px 12px; border:1px solid #eee; border-radius:10px; color:#333; transition:.12s }
+.tabs a.contrast { background:#111; color:#fff; border-color:#111 }
+.row { display:flex; gap:10px; align-items:center; }
+#globalSearch { flex:1; padding:8px 10px; border:1px solid #ddd; border-radius:10px }
+
+/* Colorful tab accents */
 .tabs a[href="#links"]{ color:#2563eb; border-color:#dbeafe; background:#eff6ff }
 .tabs a[href="#links"].contrast{ background:#2563eb; color:#fff; border-color:#2563eb }
 .tabs a[href="#lifestyle"]{ color:#0f766e; border-color:#ccfbf1; background:#ecfeff }
@@ -25,7 +43,28 @@ h1 .grad{
 .tabs a[href="#financial"].contrast{ background:#f59e0b; color:#111; border-color:#f59e0b }
 .tabs a[href="#articles"]{ color:#7c3aed; border-color:#e9d5ff; background:#faf5ff }
 .tabs a[href="#articles"].contrast{ background:#7c3aed; color:#fff; border-color:#7c3aed }
-/* Card hover polish */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
-article{background:#fff;border:1px solid #ececec;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.06);padding:12px 14px;overflow:hidden;transition:transform .08s,box-shadow .08s,border-color .08s}
-article:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(0,0,0,.09);border-color:#e5e7eb}
+
+/* ========== Sections (SPA) ========== */
+.tab { display:none; }
+.tab.active { display:block; }
+
+/* ========== Cards / Grids ========== */
+.grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px }
+article{
+  background:#fff; border:1px solid #ececec; border-radius:16px; box-shadow: var(--shadow);
+  padding:12px 14px; overflow:hidden; transition: transform .08s, box-shadow .08s, border-color .08s;
+}
+article:hover{ transform: translateY(-2px); box-shadow: 0 14px 36px rgba(0,0,0,.09); border-color:#e5e7eb }
+.thumb{ width:100%; height:180px; object-fit:cover; display:block; border-bottom:1px solid #eee }
+.link-icon{ width:16px; height:16px; vertical-align:-3px; margin-right:4px }
+.plain-list{ list-style:none; padding-left:0 }
+
+/* ========== News page helper classes (if used) ========== */
+.news-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px }
+.news-card{ display:flex; flex-direction:column; text-decoration:none; color:inherit; background:#fff; border:1px solid #eee; border-radius:16px; box-shadow:0 6px 20px rgba(0,0,0,.08); overflow:hidden }
+.img-wrap{ aspect-ratio:16/9; background:#fafafa }
+.img-wrap img{ width:100%; height:100%; object-fit:cover; display:block }
+.body{ padding:12px 14px }
+.source{ color:#666; font-size:12px }
+.title{ margin:.25rem 0 .35rem; font-size:16px; font-weight:600 }
+.desc{ margin:0; color:#444; font-size:14px; line-height:1.35 }
