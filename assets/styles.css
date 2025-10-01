@@ -68,3 +68,14 @@ article:hover{ transform: translateY(-2px); box-shadow: 0 14px 36px rgba(0,0,0,.
 .source{ color:#666; font-size:12px }
 .title{ margin:.25rem 0 .35rem; font-size:16px; font-weight:600 }
 .desc{ margin:0; color:#444; font-size:14px; line-height:1.35 }
+/* --- Articles layout fix --- */
+#articlesList{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+#articlesList article .thumb{ height: 160px; }
+#articlesList article h3{ margin: .4rem 0 .25rem; font-size: 18px; line-height: 1.2; }
+#articlesList article p{ margin: 0 0 .25rem; }
+#articlesList article{ overflow-wrap: anywhere; }
