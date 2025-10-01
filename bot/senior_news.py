@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 """
 Builds site/data/news.json with up to 10 fresh senior-relevant items.
-Sources include AARP, Next Avenue, KFF Health News, Medicare, SSA, NIA, CDC, NCOA, and FTC scams.
+Robust: multiple feeds, dedupe, best-effort images, and fallback to previous file if too few items.
 """
 
-import os, json, re, time, hashlib
+import os, json, re, time, hashlib, sys
 from datetime import datetime, timezone
 from urllib.parse import urlparse
 
@@ -13,22 +13,22 @@ import feedparser
 import requests
 
 OUT_JSON = os.path.join("site", "data", "news.json")
-TIMEOUT = 12
-UA = "RetirementBot-News/1.1 (+github-actions)"
+TIMEOUT = 10
+UA = "RetirementBot-News/1.2 (+github-actions)"
 
 FEEDS = [
-    # Senior / aging focus
+    # Senior / aging focused
     "https://www.aarp.org/rss/aarp/everything.xml",
     "https://www.nextavenue.org/feed/",
     "https://www.kffhealthnews.org/topic/aging/feed/",
     "https://www.ncoa.org/news/articles/feed/",
-
-    # Official program + health policy
+    # Official programs / health
     "https://blog.medicare.gov/feed/",
     "https://www.ssa.gov/newsroom/press-releases/rss.xml",
     "https://www.nia.nih.gov/news-events/newsroom/rss.xml",
-    "https://tools.cdc.gov/api/v2/resources/media/403372.rss",  # CDC older adults topic feed
-    "https://www.ftc.gov/feeds/consumerscams.xml"               # FTC scams (useful alerts)
+    # Broader health & scams (useful alerts)
+    "https://tools.cdc.gov/api/v2/resources/media/403372.rss",
+    "https://www.ftc.gov/feeds/consumerscams.xml"
 ]
 
 def ensure_dir(p): os.makedirs(os.path.dirname(p), exist_ok=True)
@@ -86,42 +86,73 @@ def collect():
     for url in FEEDS:
         try:
             feed = feedparser.parse(url, request_headers=headers)
+            count = 0
             for e in feed.entries:
                 link = e.get("link")
                 title = (e.get("title") or "").strip()
                 if not title or not link:
                     continue
                 key = dedup_key(title, link)
-                if key in seen: 
+                if key in seen:
                     continue
                 seen.add(key)
-
                 item = {
                     "title": title,
                     "url": link,
                     "source": hostname(link),
                     "summary": clean_html(e.get("summary") or e.get("description") or ""),
                     "published_ts": ts_from_entry(e),
-                    "image": None
+                    "image": try_image(e, link)
                 }
-                item["image"] = try_image(e, link)
                 items.append(item)
+                count += 1
+            print(f"[feed] {url} -> {count} entries", file=sys.stderr)
         except Exception as ex:
-            print(f"[WARN] feed failed {url}: {ex}")
+            print(f"[WARN] feed failed {url}: {ex}", file=sys.stderr)
 
-    # newest first and keep the top 10
+    # newest first, cap 10
     items.sort(key=lambda x: x["published_ts"], reverse=True)
     items = items[:10]
-
-    # finalize timestamps
     for it in items:
         it["published"] = datetime.fromtimestamp(it["published_ts"], tz=timezone.utc).isoformat()
-
     return items
+
+def read_existing():
+    try:
+        with open(OUT_JSON, "r", encoding="utf-8") as f:
+            j = json.load(f)
+        arr = j if isinstance(j, list) else j.get("items", [])
+        return arr if isinstance(arr, list) else []
+    except Exception:
+        return []
+
+FALLBACKS = [
+    # lightweight evergreen fallback set (never empty UI)
+    {"title":"Medicare open enrollment: key dates and tips","url":"https://www.medicare.gov/","source":"medicare.gov","summary":"What to compare during Medicare Open Enrollment.","published_ts": int(time.time())-1, "image":"https://logo.clearbit.com/medicare.gov"},
+    {"title":"AARP: 5 Social Security filing myths","url":"https://www.aarp.org/retirement/social-security/","source":"aarp.org","summary":"Common misconceptions debunked.","published_ts": int(time.time())-2, "image":"https://logo.clearbit.com/aarp.org"},
+    {"title":"Next Avenue: Downsizing without the stress","url":"https://www.nextavenue.org/","source":"nextavenue.org","summary":"Practical steps for rightsizing.","published_ts": int(time.time())-3, "image":"https://logo.clearbit.com/nextavenue.org"}
+]
 
 def main():
     ensure_dir(OUT_JSON)
     items = collect()
+
+    # If we gathered too few, blend with previous & fallbacks
+    if len(items) < 6:
+        prev = read_existing()
+        merged = items + [x for x in prev if x.get("url") and x.get("title")]
+        # Add evergreen if still thin
+        if len(merged) < 10:
+            merged += FALLBACKS
+        # Dedupe by title+url
+        seen, deduped = set(), []
+        for it in merged:
+            key = dedup_key(it.get("title"), it.get("url"))
+            if key in seen: continue
+            seen.add(key); deduped.append(it)
+        deduped.sort(key=lambda x: int(x.get("published_ts", time.time())), reverse=True)
+        items = deduped[:10]
+
     payload = {
         "fetched_at": datetime.now(timezone.utc).isoformat(),
         "total": len(items),
