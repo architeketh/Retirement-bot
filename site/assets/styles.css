@@ -116,4 +116,4 @@ input, button { font-size:16px; } /* iOS zoom fix */
   *{ transition:none !important; }
 }
 /* --- Extra ~15% shrink for card thumbnails --- */
-.thumb { height: calc(var(--thumb-h) * 0.65); }
+.thumb { height: calc(var(--thumb-h) * 0.50); }
