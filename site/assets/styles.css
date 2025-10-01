@@ -77,3 +77,4 @@ article:hover{ transform:translateY(-2px); box-shadow:0 14px 36px rgba(0,0,0,.09
 
 /* ========= Footer ========= */
 .footer{ color:#777; font-size:13px; padding-bottom:28px }
+.muted.source-chip{display:inline-block;padding:2px 8px;border:1px solid #e5e7eb;border-radius:999px;font-size:12px;background:#fff}
