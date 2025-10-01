@@ -2,85 +2,15 @@
   "fetched_at": "2025-10-01T12:00:00Z",
   "total": 10,
   "items": [
-    {
-      "title": "Medicare open enrollment: key dates and tips",
-      "url": "https://www.medicare.gov/",
-      "source": "medicare.gov",
-      "summary": "What to compare during Medicare Open Enrollment and where to get help.",
-      "published": "2025-09-28T09:00:00Z",
-      "image": "https://logo.clearbit.com/medicare.gov"
-    },
-    {
-      "title": "AARP: 5 Social Security filing myths",
-      "url": "https://www.aarp.org/retirement/social-security/",
-      "source": "aarp.org",
-      "summary": "Common misconceptions that can cost you money when you claim.",
-      "published": "2025-09-27T08:30:00Z",
-      "image": "https://logo.clearbit.com/aarp.org"
-    },
-    {
-      "title": "Next Avenue: Downsizing without the stress",
-      "url": "https://www.nextavenue.org/",
-      "source": "nextavenue.org",
-      "summary": "Practical steps for rightsizing your home and life.",
-      "published": "2025-09-26T13:15:00Z",
-      "image": "https://logo.clearbit.com/nextavenue.org"
-    },
-    {
-      "title": "KFF Health News: Aging well, preventing falls",
-      "url": "https://kffhealthnews.org/topic/aging/",
-      "source": "kffhealthnews.org",
-      "summary": "New research and community programs to reduce fall risk.",
-      "published": "2025-09-25T10:10:00Z",
-      "image": "https://logo.clearbit.com/kffhealthnews.org"
-    },
-    {
-      "title": "SSA newsroom: Latest updates for beneficiaries",
-      "url": "https://www.ssa.gov/newsroom/",
-      "source": "ssa.gov",
-      "summary": "Recent announcements affecting Social Security recipients.",
-      "published": "2025-09-24T15:00:00Z",
-      "image": "https://logo.clearbit.com/ssa.gov"
-    },
-    {
-      "title": "NIA: Healthy aging insights",
-      "url": "https://www.nia.nih.gov/news-events",
-      "source": "nia.nih.gov",
-      "summary": "Nutrition, exercise, and cognitive health tips from NIH.",
-      "published": "2025-09-23T12:00:00Z",
-      "image": "https://logo.clearbit.com/nia.nih.gov"
-    },
-    {
-      "title": "CDC: Respiratory season guidance for older adults",
-      "url": "https://www.cdc.gov/aging/index.html",
-      "source": "cdc.gov",
-      "summary": "What to know about vaccines and prevention this season.",
-      "published": "2025-09-22T08:00:00Z",
-      "image": "https://logo.clearbit.com/cdc.gov"
-    },
-    {
-      "title": "NCOA: Benefits you might be missing",
-      "url": "https://www.ncoa.org/",
-      "source": "ncoa.org",
-      "summary": "Find programs that can help with food, medicine, and more.",
-      "published": "2025-09-21T11:00:00Z",
-      "image": "https://logo.clearbit.com/ncoa.org"
-    },
-    {
-      "title": "FTC: New scam alerts targeting seniors",
-      "url": "https://www.consumer.ftc.gov/features/scam-alerts",
-      "source": "consumer.ftc.gov",
-      "summary": "How to spot and avoid the latest fraud tactics.",
-      "published": "2025-09-20T14:00:00Z",
-      "image": "https://logo.clearbit.com/consumer.ftc.gov"
-    },
-    {
-      "title": "MedlinePlus: Medication safety for older adults",
-      "url": "https://medlineplus.gov/seniors.html",
-      "source": "medlineplus.gov",
-      "summary": "Talk to your pharmacist, manage interactions, and store meds safely.",
-      "published": "2025-09-19T09:45:00Z",
-      "image": "https://logo.clearbit.com/medlineplus.gov"
-    }
+    { "title": "Medicare open enrollment: key dates and tips", "url": "https://www.medicare.gov/", "source": "medicare.gov", "summary": "What to compare during Medicare Open Enrollment and where to get help.", "published": "2025-09-28T09:00:00Z", "image": "https://logo.clearbit.com/medicare.gov" },
+    { "title": "AARP: 5 Social Security filing myths", "url": "https://www.aarp.org/retirement/social-security/", "source": "aarp.org", "summary": "Common misconceptions that can cost you money when you claim.", "published": "2025-09-27T08:30:00Z", "image": "https://logo.clearbit.com/aarp.org" },
+    { "title": "Next Avenue: Downsizing without the stress", "url": "https://www.nextavenue.org/", "source": "nextavenue.org", "summary": "Practical steps for rightsizing your home and life.", "published": "2025-09-26T13:15:00Z", "image": "https://logo.clearbit.com/nextavenue.org" },
+    { "title": "KFF Health News: Aging well, preventing falls", "url": "https://kffhealthnews.org/topic/aging/", "source": "kffhealthnews.org", "summary": "New research and community programs to reduce fall risk.", "published": "2025-09-25T10:10:00Z", "image": "https://logo.clearbit.com/kffhealthnews.org" },
+    { "title": "SSA newsroom: Latest updates for beneficiaries", "url": "https://www.ssa.gov/newsroom/", "source": "ssa.gov", "summary": "Recent announcements affecting Social Security recipients.", "published": "2025-09-24T15:00:00Z", "image": "https://logo.clearbit.com/ssa.gov" },
+    { "title": "NIA: Healthy aging insights", "url": "https://www.nia.nih.gov/news-events", "source": "nia.nih.gov", "summary": "Nutrition, exercise, and cognitive health tips from NIH.", "published": "2025-09-23T12:00:00Z", "image": "https://logo.clearbit.com/nia.nih.gov" },
+    { "title": "CDC: Respiratory season guidance for older adults", "url": "https://www.cdc.gov/aging/index.html", "source": "cdc.gov", "summary": "What to know about vaccines and prevention this season.", "published": "2025-09-22T08:00:00Z", "image": "https://logo.clearbit.com/cdc.gov" },
+    { "title": "NCOA: Benefits you might be missing", "url": "https://www.ncoa.org/", "source": "ncoa.org", "summary": "Find programs that can help with food, medicine, and more.", "published": "2025-09-21T11:00:00Z", "image": "https://logo.clearbit.com/ncoa.org" },
+    { "title": "FTC: New scam alerts targeting seniors", "url": "https://www.consumer.ftc.gov/features/scam-alerts", "source": "consumer.ftc.gov", "summary": "How to spot and avoid the latest fraud tactics.", "published": "2025-09-20T14:00:00Z", "image": "https://logo.clearbit.com/consumer.ftc.gov" },
+    { "title": "MedlinePlus: Medication safety for older adults", "url": "https://medlineplus.gov/seniors.html", "source": "medlineplus.gov", "summary": "Talk to your pharmacist, manage interactions, and store meds safely.", "published": "2025-09-19T09:45:00Z", "image": "https://logo.clearbit.com/medlineplus.gov" }
   ]
 }
