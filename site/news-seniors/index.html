@@ -1,54 +1,79 @@
 <!doctype html>
-<html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Seniors Daily News — Retirement Hub</title>
-<link rel="stylesheet" href="../assets/styles.css">
-<style>
-.page{width:min(1100px,92%);margin:0 auto;padding:28px 0}
-.news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
-.news-card{display:flex;flex-direction:column;text-decoration:none;color:inherit;background:#fff;border:1px solid #eee;border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,.08);overflow:hidden}
-.img-wrap{aspect-ratio:16/9;background:#fafafa}
-.img-wrap img{width:100%;height:100%;object-fit:cover;display:block}
-.body{padding:12px 14px}
-.source{color:#666;font-size:12px}
-.title{margin:.25rem 0 .35rem;font-size:16px;font-weight:600}
-.desc{margin:0;color:#444;font-size:14px;line-height:1.35}
-.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
-.btn{display:inline-block;padding:8px 14px;border:1px solid #e5e7eb;border-radius:999px;background:#fff}
-.btn-primary{background:#2563eb;color:#fff;border-color:#2563eb}
-</style>
+<link rel="stylesheet" href="../assets/styles.css?v=hero3">
 </head>
 <body>
-<div class="page">
-  <h1>Seniors Daily News</h1>
-  <div class="toolbar">
-    <a class="btn" href="../">← Back to Home</a>
-    <a class="btn btn-primary" href="archive.html">Archive</a>
+
+<!-- Top bar (same style as home) -->
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="../">
+      <img src="../assets/logo.svg" alt="" class="brand-logo" onerror="this.style.display='none'">
+      <span class="brand-text">Retirement <strong>Hub</strong></span>
+    </a>
+    <nav class="topnav">
+      <a href="../#links">Links</a>
+      <a href="../#lifestyle">Lifestyle</a>
+      <a href="../#financial">Financial</a>
+      <a href="../#articles">Articles</a>
+      <a href="./archive.html" class="contrast">Archive</a>
+    </nav>
   </div>
-  <div id="news" class="news-grid"></div>
-</div>
+</header>
+
+<main class="wrap" style="padding-top:18px">
+  <h1 style="margin:0 0 6px">Seniors Daily News</h1>
+  <p class="muted" id="newsUpdated">Updated:</p>
+  <div class="news-toolbar" style="display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 16px">
+    <a class="btn" href="../">← Back to Home</a>
+    <a class="btn btn-primary" href="./archive.html">Open Archive</a>
+  </div>
+
+  <div id="newsGrid" class="grid"></div>
+</main>
+
+<footer class="wrap footer">
+  <p class="muted">Shows up to 10 fresh items a day from trusted senior-focused sources.</p>
+</footer>
+
 <script>
 (async function(){
-  const mount = document.getElementById('news');
+  const updatedEl = document.getElementById('newsUpdated');
+  const mount = document.getElementById('newsGrid');
+
+  function esc(s){ return String(s||"").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[m])); }
+  function card(n){
+    const img = n.image ? `<img class="thumb" src="${esc(n.image)}" alt="">` : '';
+    const date = n.published ? new Date(n.published).toLocaleDateString() : '';
+    const sub = [n.source||'', date].filter(Boolean).join(' • ');
+    const summary = (n.summary||'').trim();
+    return `
+      <article>
+        ${img}
+        <h3><a href="${esc(n.url||'#')}" target="_blank" rel="noopener">${esc(n.title||'(Untitled)')}</a></h3>
+        ${sub?`<p class="muted" style="margin:.15rem 0 .35rem">${esc(sub)}</p>`:''}
+        ${summary?`<p>${esc(summary).slice(0,180)}</p>`:''}
+      </article>`;
+  }
+
   try{
-    const r = await fetch('../data/news.json', {cache:"no-store"});
-    if(!r.ok) throw new Error("load failed");
+    const r = await fetch('../data/news.json?v=' + Date.now(), {cache:'no-store'});
+    if(!r.ok) throw new Error('load failed');
     const data = await r.json();
-    const list = Array.isArray(data)?data:(data.items||[]);
-    const esc = s=>String(s||"").replace(/[&<>"']/g,m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
-    const norm = i=>({title:i.title||"(Untitled)",url:i.url||"#",image:i.image||"",desc:i.summary||"",source:i.source||"",date:i.published||i.published_at||""});
-    mount.innerHTML = (list.map(norm).map(n=>`
-      <a class="news-card" href="${esc(n.url)}" target="_blank" rel="noopener">
-        <div class="img-wrap">${n.image?`<img src="${esc(n.image)}" alt="">`:""}</div>
-        <div class="body">
-          <div class="source">${esc(n.source)} ${n.date?`• ${esc(new Date(n.date).toLocaleDateString())}`:""}</div>
-          <div class="title">${esc(n.title)}</div>
-          ${n.desc?`<p class="desc">${esc(n.desc).slice(0,180)}</p>`:""}
-        </div>
-      </a>`).join("")) || "<p>No news items found.</p>";
+    const items = Array.isArray(data) ? data : (data.items || []);
+    if (data.fetched_at) {
+      const d = new Date(data.fetched_at);
+      updatedEl.textContent = 'Updated: ' + d.toLocaleString();
+    }
+    mount.innerHTML = items.map(card).join('') || '<p>No news items yet.</p>';
   }catch(e){
-    mount.innerHTML = "<p>Couldn't load news.json.</p>";
+    mount.innerHTML = '<p>Could not load news. Please try again later.</p>';
   }
 })();
 </script>
-</body></html>
+</body>
+</html>
