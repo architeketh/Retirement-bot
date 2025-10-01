@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Seniors Daily News — Retirement Hub</title>
-<link rel="stylesheet" href="../assets/styles.css?v=hero6">
+<link rel="stylesheet" href="../assets/styles.css?v=hero7">
 </head>
 <body>
 
@@ -14,7 +14,10 @@
       <img src="../assets/logo.svg" alt="" class="brand-logo" onerror="this.style.display='none'">
       <span class="brand-text">Retirement <strong>Hub</strong></span>
     </a>
-    <nav class="topnav">
+
+    <button class="nav-toggle" aria-expanded="false" aria-controls="topnav">Menu</button>
+
+    <nav class="topnav" id="topnav">
       <a href="../#links">Links</a>
       <a href="../#lifestyle">Lifestyle</a>
       <a href="../#financial">Financial</a>
@@ -57,7 +60,7 @@ const FALLBACK = [
   const mount = document.getElementById('newsGrid');
   const esc = s => String(s||"").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':"&quot;","'":"&#39;"}[m]));
   const card = n => {
-    const img = n.image ? `<img class="thumb" src="${esc(n.image)}" alt="">` : '';
+    const img = n.image ? `<img class="thumb" loading="lazy" src="${esc(n.image)}" alt="">` : '';
     const d = n.published ? new Date(n.published).toLocaleDateString() : '';
     const sub = [n.source||'', d].filter(Boolean).join(' • ');
     const summary = (n.summary||'').trim();
@@ -81,5 +84,6 @@ const FALLBACK = [
   load();
 })();
 </script>
+<script src="../assets/mobile.js"></script>
 </body>
 </html>
