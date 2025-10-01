@@ -1,0 +1,12 @@
+[
+  {
+    "title":"Healthy Living",
+    "desc":"Fitness, hobbies, community.",
+    "image":"",
+    "tags":["fitness","community"],
+    "links":[
+      {"label":"SilverSneakers","url":"https://www.silversneakers.com/"},
+      {"label":"Senior Planet","url":"https://seniorplanet.org/"}
+    ]
+  }
+]
