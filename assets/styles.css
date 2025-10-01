@@ -179,3 +179,11 @@ article:hover{ transform:translateY(-2px); box-shadow:0 14px 36px rgba(0,0,0,.09
 .checklist-item.completed{ opacity:.7; text-decoration:line-through }
 .checklist-item .drag-handle{ cursor:grab; margin-left:auto; color:#999 }
 .footer{ color:#777; font-size:13px; padding-bottom:28px }
+
+/* --- Global image size tweak (~25% smaller) --- */
+:root { --thumb-h: 120px; }          /* was 160px */
+.thumb { height: var(--thumb-h); }
+
+@media (max-width:480px){
+  :root { --thumb-h: 112px; }        /* was 150px on phones */
+}
