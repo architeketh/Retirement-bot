@@ -117,3 +117,6 @@ input, button { font-size:16px; } /* iOS zoom fix */
 }
 /* --- Extra ~15% shrink for card thumbnails --- */
 .thumb { height: calc(var(--thumb-h) * 0.50); }
+
+.footer .donate{ margin-top:6px; font-weight:600; }
+.footer .donate a{ text-decoration: underline; color:#2563eb; }
