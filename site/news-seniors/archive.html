@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>News Archive — Retirement Hub</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<style>
+.page{width:min(1100px,92%);margin:0 auto;padding:28px 0}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+select,button{padding:8px 10px;border:1px solid #e5e7eb;border-radius:10px;background:#fff}
+.news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:12px}
+.news-card{display:flex;flex-direction:column;text-decoration:none;color:inherit;background:#fff;border:1px solid #eee;border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,.08);overflow:hidden}
+.img-wrap{aspect-ratio:16/9;background:#fafafa}
+.img-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+.body{padding:12px 14px}
+.source{color:#666;font-size:12px}
+.title{margin:.25rem 0 .35rem;font-size:16px;font-weight:600}
+.desc{margin:0;color:#444;font-size:14px;line-height:1.35}
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>News Archive</h1>
+  <div class="row">
+    <a class="btn" href="./">← Back to News</a>
+    <label>Pick a date:
+      <select id="day"></select>
+    </label>
+    <button id="load">Load</button>
+  </div>
+  <div id="news" class="news-grid"></div>
+</div>
+<script>
+(async function(){
+  const esc = s=>String(s||"").replace(/[&<>"']/g,m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+  const norm = i=>({title:i.title||"(Untitled)",url:i.url||"#",image:i.image||"",desc:i.summary||"",source:i.source||"",date:i.published||i.published_at||""});
+  const daySel = document.getElementById('day');
+  const mount = document.getElementById('news');
+
+  async function loadIndex(){
+    try{
+      const r = await fetch('../data/archive/index.json', {cache:"no-store"});
+      if(!r.ok) throw new Error();
+      const idx = await r.json();
+      daySel.innerHTML = idx.map(d=>`<option value="${esc(d.date)}">${esc(d.date)} (${d.total||0})</option>`).join('');
+    }catch{ daySel.innerHTML = ''; }
+  }
+  async function loadDay(day){
+    try{
+      const r = await fetch(`../data/archive/${day}.json`, {cache:"no-store"});
+      if(!r.ok) throw new Error();
+      const data = await r.json();
+      const list = Array.isArray(data)?data:(data.items||[]);
+      mount.innerHTML = (list.map(norm).map(n=>`
+        <a class="news-card" href="${esc(n.url)}" target="_blank" rel="noopener">
+          <div class="img-wrap">${n.image?`<img src="${esc(n.image)}" alt="">`:""}</div>
+          <div class="body">
+            <div class="source">${esc(n.source)} ${n.date?`• ${esc(new Date(n.date).toLocaleDateString())}`:""}</div>
+            <div class="title">${esc(n.title)}</div>
+            ${n.desc?`<p class="desc">${esc(n.desc).slice(0,180)}</p>`:""}
+          </div>
+        </a>`).join("")) || "<p>No items for that day.</p>";
+    }catch{ mount.innerHTML = "<p>Couldn't load that day.</p>"; }
+  }
+  await loadIndex();
+  document.getElementById('load').addEventListener('click', ()=>{ if(daySel.value) loadDay(daySel.value) });
+  // auto-load first day if present
+  if (daySel.value) loadDay(daySel.value);
+})();
+</script>
+</body></html>
