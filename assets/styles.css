@@ -79,3 +79,49 @@ article:hover{ transform: translateY(-2px); box-shadow: 0 14px 36px rgba(0,0,0,.
 #articlesList article h3{ margin: .4rem 0 .25rem; font-size: 18px; line-height: 1.2; }
 #articlesList article p{ margin: 0 0 .25rem; }
 #articlesList article{ overflow-wrap: anywhere; }
+/* === Uniform cards across all tabs === */
+#linksGrid article,
+#financialGrid article,
+#articlesList article,
+#lifestyleList article{
+  background:#fff;
+  border:1px solid #ececec;
+  border-radius:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,.06);
+  padding:12px 14px;
+  overflow:hidden;
+  transition:transform .08s, box-shadow .08s, border-color .08s;
+}
+#linksGrid article:hover,
+#financialGrid article:hover,
+#articlesList article:hover,
+#lifestyleList article:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 36px rgba(0,0,0,.09);
+  border-color:#e5e7eb;
+}
+
+/* Articles & Lifestyle grids (consistent with other tabs) */
+#articlesList,
+#lifestyleList{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:16px;
+}
+
+/* Thumbs + typography */
+#articlesList .thumb,
+#lifestyleList .thumb,
+#linksGrid .thumb,
+#financialGrid .thumb{
+  height:160px;
+  object-fit:cover;
+  background:#f5f7fb;
+  display:block;
+  border-bottom:1px solid #eee;
+}
+#articlesList h3, #lifestyleList h3{ font-size:18px; line-height:1.2; margin:.4rem 0 .25rem; }
+#articlesList p,   #lifestyleList p  { margin:0 0 .35rem; }
+
+/* Prevent any horizontal scroll from long URLs/text */
+#articlesList article, #lifestyleList article{ overflow-wrap:anywhere; }
