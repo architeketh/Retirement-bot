@@ -9,7 +9,11 @@ h1,h2,h3 { letter-spacing:-.01em; }
 .muted{ color:#666 }
 
 /* ========= Top bar ========= */
-.topbar{ background:#fff; border-bottom:1px solid #eee }
+.topbar{
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,.92); backdrop-filter: saturate(160%) blur(8px);
+  border-bottom:1px solid #eee;
+}
 .topbar-inner{ display:flex; align-items:center; justify-content:space-between; padding:10px 0 }
 .brand{ display:flex; align-items:center; gap:8px; font-weight:700; color:#111 }
 .brand-logo{ width:26px; height:26px }
@@ -30,17 +34,17 @@ h1,h2,h3 { letter-spacing:-.01em; }
 }
 .meta-row{ display:flex; gap:14px; align-items:center; flex-wrap:wrap }
 .cta{ display:flex; gap:10px }
-.btn{ display:inline-block; padding:8px 14px; border:1px solid #e5e7eb; border-radius:999px; background:#fff }
+.btn{ display:inline-flex; align-items:center; padding:8px 14px; border:1px solid #e5e7eb; border-radius:999px; background:#fff; min-height:44px }
 .btn-ghost{ background:#fff }
 .btn-primary{ background:#2563eb; color:#fff; border-color:#2563eb }
 .search-row{ margin-top:14px }
-#globalSearch{ width:100%; padding:12px 14px; border:1px solid #e5e7eb; border-radius:12px }
+#globalSearch{ width:100%; padding:12px 14px; border:1px solid #e5e7eb; border-radius:12px; font-size:16px }
 
 /* ========= Tabs & layout ========= */
 main{ padding:24px 0 48px }
 .tab{ display:none } .tab.active{ display:block }
 .tabs { display:flex; gap:10px; flex-wrap:wrap; margin:12px 0 18px }
-.tabs a { padding:8px 12px; border:1px solid #eee; border-radius:10px; color:#333; transition:.12s }
+.tabs a { padding:8px 12px; border:1px solid #eee; border-radius:10px; color:#333; transition:.12s; min-height:44px; display:inline-flex; align-items:center }
 .tabs a.contrast{ background:#111; color:#fff; border-color:#111 }
 
 /* Color accents for tabs */
@@ -77,47 +81,37 @@ article:hover{ transform:translateY(-2px); box-shadow:0 14px 36px rgba(0,0,0,.09
 
 /* ========= Footer ========= */
 .footer{ color:#777; font-size:13px; padding-bottom:28px }
-.muted.source-chip{display:inline-block;padding:2px 8px;border:1px solid #e5e7eb;border-radius:999px;font-size:12px;background:#fff}
-
 
 /* ===== Mobile polish ===== */
-
-/* Sticky, translucent top bar on scroll */
-.topbar{ position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.92); backdrop-filter: saturate(160%) blur(8px); }
-
-/* Touch-friendly targets */
+.nav-toggle{ display:none; padding:8px 12px; border:1px solid #e5e7eb; border-radius:10px; background:#fff; min-height:44px }
 .topnav a, .tabs a, .btn { min-height:44px; display:inline-flex; align-items:center; }
+input, button { font-size:16px; } /* iOS zoom fix */
 
-/* iOS zoom fix for inputs */
-input, button { font-size:16px; }
-
-/* Mobile menu toggle (hidden on desktop) */
-.nav-toggle{ display:none; padding:8px 12px; border:1px solid #e5e7eb; border-radius:10px; background:#fff; }
 @media (max-width:768px){
   .topbar-inner{ position:relative; }
-  .topnav{ position:absolute; left:0; right:0; top:100%; background:#fff; border-bottom:1px solid #eee; display:none; padding:10px 4%; }
+  .topnav{
+    position:absolute; left:0; right:0; top:100%;
+    background:#fff; border-bottom:1px solid #eee;
+    display:none; padding:10px 4%;
+  }
   .topnav.open{ display:flex; flex-wrap:wrap; gap:8px; }
   .nav-toggle{ display:inline-block; }
 }
 
-/* Headline & paddings scale down nicely */
 @media (max-width:720px){
   .hero-inner{ padding:20px 0 16px; }
   .tagline{ font-size: clamp(24px, 6vw, 34px); }
 }
 
-/* Grids on small screens */
 @media (max-width:480px){
   .grid{ grid-template-columns:1fr; gap:14px; }
   .thumb{ height:150px; }
 }
 
-/* Disable hover “jump” on touch screens */
 @media (hover:none){
   article:hover{ transform:none; box-shadow:0 10px 24px rgba(0,0,0,.06); }
 }
 
-/* Respect reduced-motion preference */
 @media (prefers-reduced-motion:reduce){
   *{ transition:none !important; }
 }
