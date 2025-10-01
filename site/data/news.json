@@ -1,0 +1,30 @@
+{
+  "fetched_at": "2025-10-01T00:00:00Z",
+  "total": 3,
+  "items": [
+    {
+      "title": "Medicare open enrollment: what to know",
+      "url": "https://www.medicare.gov/",
+      "source": "medicare.gov",
+      "summary": "Key dates and plan comparison tips.",
+      "published": "2025-09-28T12:00:00Z",
+      "image": "https://logo.clearbit.com/medicare.gov"
+    },
+    {
+      "title": "AARP: 5 Social Security filing myths",
+      "url": "https://www.aarp.org/retirement/social-security/",
+      "source": "aarp.org",
+      "summary": "Common misconceptions debunked.",
+      "published": "2025-09-25T09:00:00Z",
+      "image": "https://logo.clearbit.com/aarp.org"
+    },
+    {
+      "title": "KFF Health News: Aging well",
+      "url": "https://www.kffhealthnews.org/",
+      "source": "kffhealthnews.org",
+      "summary": "Insights on healthy aging and care.",
+      "published": "2025-09-24T08:30:00Z",
+      "image": "https://logo.clearbit.com/kffhealthnews.org"
+    }
+  ]
+}
