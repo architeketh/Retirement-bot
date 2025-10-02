@@ -151,3 +151,18 @@ input, button { font-size:16px; } /* iOS zoom fix */
   background: #f5f7fb;
   border-bottom: 1px solid #eee;
 }
+
+/* --- Square thumbnails on all cards (global override) --- */
+.thumb{
+  width: 100%;
+  aspect-ratio: 1 / 1;         /* perfect square */
+  height: auto !important;     /* defeat any old fixed heights */
+  object-fit: cover;           /* crop evenly, no stretching */
+  display: block;
+  background: #f5f7fb;
+  border-bottom: 1px solid #eee;
+}
+
+/* If any page still uses an image wrapper, square it too */
+.img-wrap{ aspect-ratio: 1 / 1 !important; }
+.img-wrap img{ width:100%; height:100%; object-fit:cover; display:block; }
