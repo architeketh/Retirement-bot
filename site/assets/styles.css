@@ -184,3 +184,12 @@ input, button { font-size:16px; } /* iOS zoom fix */
     grid-template-columns: 1fr;
   }
 }
+
+/* Make article links blue for visibility */
+#articlesList h3 a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+#articlesList h3 a:hover {
+  color: #1e40af;
+}
