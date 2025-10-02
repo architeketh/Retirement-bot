@@ -1,1 +1,6 @@
-
+[
+  { "title": "Estimate Social Security benefit", "note": "Use SSA estimator", "due": "", "done": false },
+  { "title": "Review Medicare Part B & D options", "note": "Compare premiums & formularies", "due": "", "done": false },
+  { "title": "Update beneficiaries", "note": "401(k), IRA, HSA, life insurance", "due": "", "done": false },
+  { "title": "Build 6–12 month cash buffer", "note": "", "due": "", "done": false }
+]
