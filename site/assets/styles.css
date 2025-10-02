@@ -141,3 +141,13 @@ input, button { font-size:16px; } /* iOS zoom fix */
   :root { --thumb-h: 70px; }   /* very compact cards */
 }
 .thumb { height: var(--thumb-h); }
+
+/* --- Force card images to square aspect ratio --- */
+.thumb {
+  width: 100%;
+  aspect-ratio: 1 / 1;   /* square */
+  object-fit: cover;     /* zoom & crop to fill square */
+  display: block;
+  background: #f5f7fb;
+  border-bottom: 1px solid #eee;
+}
