@@ -120,3 +120,24 @@ input, button { font-size:16px; } /* iOS zoom fix */
 
 .footer .donate{ margin-top:6px; font-weight:600; }
 .footer .donate a{ text-decoration: underline; color:#2563eb; }
+
+/* --- Responsive thumbnail scaling --- */
+
+/* Default desktop size (already smaller after tweaks) */
+:root { --thumb-h: 102px; }  /* desktop baseline */
+
+/* Tablet */
+@media (max-width: 900px){
+  :root { --thumb-h: 90px; }   /* about 12% smaller on tablets */
+}
+
+/* Mobile */
+@media (max-width: 600px){
+  :root { --thumb-h: 80px; }   /* ~20% smaller than desktop */
+}
+
+/* Extra small phones */
+@media (max-width: 400px){
+  :root { --thumb-h: 70px; }   /* very compact cards */
+}
+.thumb { height: var(--thumb-h); }
